@@ -44,7 +44,7 @@ object CochesDAO {
     fun consultarCochePorId(id: Int): Coche? {
         var coche: Coche? = null
         getConnection()?.use { conn ->
-            conn.prepareStatement("SELECT * FROM plantas WHERE id_coche = ?").use { pstmt ->
+            conn.prepareStatement("SELECT * FROM coches WHERE id_coche = ?").use { pstmt ->
                 pstmt.setInt(1, id)
                 val rs = pstmt.executeQuery()
                 if (rs.next()) {
