@@ -1,46 +1,33 @@
-import java.io.File
-import java.sql.DriverManager
 import java.sql.Connection
+import java.sql.DriverManager
 import java.sql.SQLException
 
-object carsBD {
-    // Ruta al archivo de base de datos SQLite
-    private val dbPath = "src/main/resources/cars.sqlite"
-    private val dbFile = File(dbPath)
-    private val url = "jdbc:sqlite:${dbFile.absolutePath}"
+// Ruta al archivo de base de datos SQLite
+const val URL_BD = "jdbc:sqlite:src/main/resources/cars.sqlite"
 
-    // Obtener conexión
-    fun getConnection(): Connection? {
-        return try {
-            DriverManager.getConnection(url)
-        } catch (e: SQLException) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    // Función de prueba: verificar conexión
-    fun testConnection(): Boolean {
-        return getConnection()?.use { conn ->
-            println("Conexión establecida con éxito a ${dbFile.absolutePath}")
-            true
-        } ?: false
-    }
-
-    // Cerrar conexión (para los casos en los que no se utiliza .use)
-    fun closeConnection(conn: Connection?) {
-        try {
-            conn?.close()
-            println("Conexión cerrada correctamente.")
-        } catch (e: SQLException) {
-            println("Error al cerrar la conexión: ${e.message}")
-        }
+// Obtener conexión
+fun getConnection(): Connection? {
+    return try {
+        DriverManager.getConnection(URL_BD)
+    } catch (e: SQLException) {
+        e.printStackTrace()
+        null
     }
 }
+
 fun main() {
-    val conn = carsBD.getConnection()
-    if (conn != null) {
-        println("Conectado a la BD correctamente.")
-        carsBD.closeConnection(conn)
-    }
+    getConnection()?.use { conn ->
+        println("Conectado a la BD")
+
+        conn.createStatement().use { stmt ->
+            val rs = stmt.executeQuery("SELECT * FROM coches")
+            while (rs.next()) {
+                println("${rs.getInt("id")}," +
+                        " ${rs.getString("modelo")}," +
+                        " ${rs.getString("marca")}," +
+                        " ${rs.getDouble("consumo")}," +
+                        " ${rs.getInt("hp")}")
+            }
+        }
+    } ?: println("No se pudo conectar")
 }
