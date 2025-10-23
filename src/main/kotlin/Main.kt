@@ -25,6 +25,8 @@ fun main() {
         println(" - [${it.id_coche}] ${it.modelo}, ${it.marca}, ${it.consumo}, ${it.hp} ")
     }
 
+    CochesDAO.crearCoche(Coche(modelo = "modelo", marca = "marca", consumo = 8.8, hp = 3),2)
+
     // Consultar planta por ID
 //    val planta = PlantasDAO.consultarPlantaPorId(3)
 //    if (planta != null) {

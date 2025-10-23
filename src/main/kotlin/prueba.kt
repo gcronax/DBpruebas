@@ -23,26 +23,58 @@ data class Repuesto(
 )
 object CochesDAO {
 
-    fun crearCoche(id_coche: Int, id_repuesto: Int, cantidad: Int) {
+    fun crearCoche(coche: Coche, id_rueda: Int) {
         getConnection()?.use { conn ->
             try {
                 conn.autoCommit = false  // Iniciar transacción manual
 
-                // Restar stock a la planta
-//                conn.prepareStatement("UPDATE plantas SET stock = stock - $cantidad WHERE id_planta = ?").use { stock ->
-//                    stock.setInt(1, id_planta)
-//                    stock.executeUpdate()
-//                }
-//
-//                // Añadir línea en tabla jardines_plantas
-//                conn.prepareStatement("INSERT INTO jardines_plantas(id_jardin, id_planta, cantidad) VALUES (?, ?, ?)").use { plantar ->
-//                    plantar.setInt(1, id_jardin)
-//                    plantar.setInt(2, id_planta)
-//                    plantar.setInt(3, cantidad)
-//                    plantar.executeUpdate()
-//                }
 
-                // Confirmar cambios
+                conn.prepareStatement(
+                    "INSERT INTO coches(modelo, marca, consumo, hp) VALUES (?, ?, ?, ?)"
+                ).use { pstmt ->
+                    pstmt.setString(1, coche.modelo)
+                    pstmt.setString(2, coche.marca)
+                    pstmt.setDouble(3, coche.consumo)
+                    pstmt.setInt(4, coche.hp)
+                    pstmt.executeUpdate()
+                    println("Coche '${coche.modelo}' insertada con éxito.")
+                }
+
+
+                var cantidad: Int=0
+                conn.prepareStatement("SELECT cantidad FROM ruedas WHERE id_rueda = ?").use { pstmt ->
+                    pstmt.setInt(1, id_rueda)
+                    val rs = pstmt.executeQuery()
+                    if (rs.next()) {
+                        cantidad = rs.getInt("cantidad")
+                    }
+                }
+                if (cantidad<4) {
+                    conn.rollback()
+                    println("no hay cantidad suficiente")
+                }
+                //update ruedas-4
+
+                conn.prepareStatement(
+                    "UPDATE ruedas SET cantidad = ? WHERE id_rueda = ?"
+                ).use { pstmt ->
+                    pstmt.setInt(1, cantidad-4)
+                    pstmt.setInt(2, id_rueda)
+                    val filas = pstmt.executeUpdate()
+                    if (filas > 0) {
+                        println("Rueda con id=${id_rueda} actualizado con éxito.")
+                    } else {
+                        println("No se encontró ninguna rueda con id=${id_rueda}.")
+                    }
+                }
+
+
+
+
+
+
+
+
                 conn.commit()
                 println("Transacción realizada con éxito.")
             } catch (e: SQLException) {
