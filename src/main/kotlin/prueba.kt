@@ -49,10 +49,7 @@ object CochesDAO {
                         cantidad = rs.getInt("cantidad")
                     }
                 }
-                if (cantidad<4) {
-                    conn.rollback()
-                    println("no hay cantidad suficiente")
-                }
+
                 //update ruedas-4
 
                 conn.prepareStatement(
@@ -69,14 +66,19 @@ object CochesDAO {
                 }
 
 
+                if (cantidad<4) {
+                    conn.rollback()
+                    println("no hay cantidad suficiente")
+                }else{
+                    println("Transacción realizada con éxito.")
 
+                }
 
 
 
 
 
                 conn.commit()
-                println("Transacción realizada con éxito.")
             } catch (e: SQLException) {
                 if (e.message?.contains("UNIQUE constraint failed") == true) {
                     println("Error: intento de insertar clave duplicada")

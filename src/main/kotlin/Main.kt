@@ -20,12 +20,12 @@ fun getConnection(): Connection? {
 fun main() {
 
     // Listar todas las plantas
-    println("Lista de plantas:")
+    println("Lista de coches:")
     CochesDAO.listarCoches().forEach {
         println(" - [${it.id_coche}] ${it.modelo}, ${it.marca}, ${it.consumo}, ${it.hp} ")
     }
 
-    CochesDAO.crearCoche(Coche(modelo = "modelo", marca = "marca", consumo = 8.8, hp = 3),2)
+    CochesDAO.crearCoche(Coche(modelo = "modelo", marca = "marca", consumo = 8.8, hp = 300),2)
 
     // Consultar planta por ID
 //    val planta = PlantasDAO.consultarPlantaPorId(3)
