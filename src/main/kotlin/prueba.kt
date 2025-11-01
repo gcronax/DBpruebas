@@ -289,11 +289,11 @@ object RepuestoDAO {
         val lista = mutableListOf<Repuesto>()
         getConnection()?.use { conn ->
             conn.createStatement().use { stmt ->
-                val rs = stmt.executeQuery("SELECT * FROM coches")
+                val rs = stmt.executeQuery("SELECT * FROM repuestos")
                 while (rs.next()) {
                     lista.add(
                         Repuesto(
-                            id_repuesto = rs.getInt("id_coche"),
+                            id_repuesto = rs.getInt("id_repuesto"),
                             localizacion = rs.getString("localizacion"),
                             precio = rs.getDouble("precio"),
                             cantidad  = rs.getInt("cantidad"),
@@ -314,7 +314,7 @@ object RepuestoDAO {
                 val rs = pstmt.executeQuery()
                 if (rs.next()) {
                     repuesto = Repuesto(
-                        id_repuesto = rs.getInt("id_coche"),
+                        id_repuesto = rs.getInt("id_repuesto"),
                         localizacion = rs.getString("localizacion"),
                         precio = rs.getDouble("precio"),
                         cantidad  = rs.getInt("cantidad"),

@@ -271,7 +271,7 @@ fun menuRepuesto() {
                     print("Dame el id: ")
                     val id: Int = readLine()?.toIntOrNull() ?: 0
                     val repuesto = RepuestoDAO.consultarRepuestoPorId(id)
-                    println(" - id -> [${repuesto?.id_repuesto}] localizacion:${repuesto?.localizacion}, precio:${repuesto?.precio}, cantidad:${repuesto?.cantidad}, nombre:${repuesto?.nombre}")
+                    println(" - id -> [${repuesto?.id_repuesto}] localizacion:${repuesto?.localizacion}, precio:${repuesto?.precio}, cantidad:${repuesto?.cantidad}, nombre:${repuesto?.nombre} ")
                 }
                 3 -> {
                     print("localizacion del nuevo repuesto: ")
