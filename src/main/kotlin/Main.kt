@@ -108,7 +108,9 @@ fun menuCoche() {
                 2 -> {
                     print("Dame el id: ")
                     val id: Int = readLine()?.toIntOrNull() ?: 0
-                    CochesDAO.consultarCochePorId(id)
+                    val Coche=CochesDAO.consultarCochePorId(id)
+                    println(" - id -> [${Coche?.id_coche}] modelo:${Coche?.modelo}, marca:${Coche?.marca}, consuo:${Coche?.consumo}, potencia:${Coche?.hp} ")
+
 
                 }
                 3 -> {
@@ -189,7 +191,8 @@ fun menuRueda() {
                 2 -> {
                     print("Dame el id: ")
                     val id: Int = readLine()?.toIntOrNull() ?: 0
-                    RuedasDAO.consultarRuedaPorId(id)
+                    val Rueda=RuedasDAO.consultarRuedaPorId(id)
+                    println(" - id -> [${Rueda?.id_rueda}] tipo:${Rueda?.tipo}, precio:${Rueda?.precio}, pulgadas:${Rueda?.pulgadas}, cantidad:${Rueda?.cantidad} ")
 
                 }
                 3 -> {
