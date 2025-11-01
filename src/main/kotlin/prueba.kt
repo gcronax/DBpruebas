@@ -37,7 +37,6 @@ object CochesDAO {
                     pstmt.setDouble(3, coche.consumo)
                     pstmt.setInt(4, coche.hp)
                     pstmt.executeUpdate()
-                    println("Coche '${coche.modelo}' insertada con éxito.")
                 }
 
 
@@ -50,7 +49,6 @@ object CochesDAO {
                     }
                 }
 
-                //update ruedas-4
 
                 conn.prepareStatement(
                     "UPDATE ruedas SET cantidad = ? WHERE id_rueda = ?"
@@ -59,7 +57,6 @@ object CochesDAO {
                     pstmt.setInt(2, id_rueda)
                     val filas = pstmt.executeUpdate()
                     if (filas > 0) {
-                        println("Rueda con id=${id_rueda} actualizado con éxito.")
                     } else {
                         println("No se encontró ninguna rueda con id=${id_rueda}.")
                     }
@@ -68,9 +65,12 @@ object CochesDAO {
 
                 if (cantidad<4) {
                     conn.rollback()
-                    println("no hay cantidad suficiente")
+                    println("no hay cantidad de ruedas suficiente")
+
                 }else{
                     println("Transacción realizada con éxito.")
+                    println("Coche '${coche.modelo}' insertada con éxito.")
+                    println("Rueda con id=${id_rueda} actualizado con éxito.")
 
                 }
 
@@ -150,7 +150,7 @@ object CochesDAO {
 
     fun actualizarCoche(coche: Coche) {
         if (coche.id_coche == null) {
-            println("No se puede actualizar una planta sin id.")
+            println("No se puede actualizar un coche sin id.")
             return
         }
         getConnection()?.use { conn ->
